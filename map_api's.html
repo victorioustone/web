@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: Gill Sans Extrabold, sans-serif;
-            font-size: 10pt
+            font-size: 10pt;
         }
         * {
             margin: 0;
@@ -43,6 +43,11 @@
             background-color: #008CBA;
             padding: 3px 30px;
             margin: 5px;
+        }
+        #back{
+            padding: 3px 30px;
+            margin: 5px;
+            background-color: #e7e7e7;
         }
         .map {
             position: absolute;
@@ -120,6 +125,12 @@
         function clearMap(){
             myMap.geoObjects.removeAll();
         }
+
+        /* яндекс.карты | вернуться в точку нахождения*/
+        function getBack(){
+            myMap.setCenter([latitude, longitude], 12);
+        }
+
     </script>
 </head>
 
@@ -131,6 +142,7 @@
             Куда: <input type='text' id='to'>
             <input type='button' id='getroute' value="Построить маршрут" onclick="makeRoute()">
             <input type='button' id="clear" value="Очистить карту" onclick="clearMap()">
+            <input type='button' id="back" value="Вернуться" onclick="getBack()">
         </div>
         <div class="coords"> 
             Координаты по IP: <text id="latitude"></text>, <text id="longitude"></text>

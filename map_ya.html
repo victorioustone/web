@@ -44,6 +44,11 @@
             padding: 3px 30px;
             margin: 5px;
         }
+        #back{
+            padding: 3px 30px;
+            margin: 5px;
+            background-color: #e7e7e7;
+        }
         .map {
             position: absolute;
             top: 100px;
@@ -62,12 +67,14 @@
         var myMap;
         var myRoute;
         var location;
+        var latitude;
+        var longitude;
 
         ymaps.ready(init);
         function init(){
             myMap = new ymaps.Map("map", {
                 center: [55.76, 37.64],
-                zoom: 8,
+                zoom: 12,
                 controls: ['zoomControl', 'typeSelector'],
                 type: 'yandex#hybrid',
             });
@@ -79,9 +86,11 @@
                 mapStateAutoApply: true
             }).then(function (result) {
                 // myMap.geoObjects.add(result.geoObjects); // показывает точку локации фирменным яндексовским "я"
-                myMap.setCenter(result.geoObjects.position, 15);
-                $('#latitude').text(result.geoObjects.position[0]);
-                $('#longitude').text(result.geoObjects.position[1]);
+                myMap.setCenter(result.geoObjects.position, 12);
+                latitude = result.geoObjects.position[0];
+                longitude = result.geoObjects.position[1];
+                $('#latitude').text(latitude);
+                $('#longitude').text(longitude);
             });
         }
 
@@ -114,6 +123,11 @@
         function clearMap(){
             myMap.geoObjects.removeAll();
         }
+
+        /* яндекс.карты | вернуться в точку нахождения*/
+        function getBack(){
+            myMap.setCenter([latitude, longitude], 12);
+        }
     </script>
 </head>
 
@@ -125,6 +139,7 @@
             Куда: <input type='text' id='to'>
             <input type='button' id='getroute' value="Построить маршрут" onclick="makeRoute()">
             <input type='button' id="clear" value="Очистить карту" onclick="clearMap()">
+            <input type='button' id="back" value="Вернуться" onclick="getBack()">
         </div>
         <div class="coords"> 
             Координаты по IP: <text id="latitude"></text>, <text id="longitude"></text>
