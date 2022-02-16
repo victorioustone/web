@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Интерактивная карта</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        body {
+            font-family: Gill Sans Extrabold, sans-serif;
+            font-size: 10pt
+        }
+        * {
+            margin: 0;
+        }
+        h1 {
+            text-align: center;
+            padding: 5px;
+            font-size: 28pt
+        }
+        .block {
+            position:relative;
+        }
+        .routeinfo {
+            margin: 5px;
+            float: left;
+            padding: 5px;
+        }
+        .coords {
+            margin: 5px;
+            float: right;
+            padding: 5px;
+        }
+        input[type=text] {
+            border: 1px solid black;
+            border-radius: 4px;
+            padding: 3px 10px;
+        }
+        #getroute{
+            background-color: #4CAF50;
+            padding: 3px 19px;
+            margin: 5px;
+        }
+        #clear{
+            background-color: #008CBA;
+            padding: 3px 30px;
+            margin: 5px;
+        }
+        .map {
+            position: absolute;
+            top: 100px;
+            z-index:0; 
+            bottom: 0;
+        }
+
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bd107a60-f614-4604-b3f7-a78ba565eabd&lang=ru_RU" type="text/javascript"></script> 
+    <script type="text/javascript">
+        
+        var latitude;
+        var longitude;
+
+        /* определяем IP */
+        $.get('https://www.cloudflare.com/cdn-cgi/trace', function(data) {
+            data = data.trim().split('\n').reduce(function(obj, pair) {
+                pair = pair.split('=');
+                return obj[pair[0]] = pair[1], obj;
+            }, {});
+
+            /* определяем геопозицию по IP */
+            $.getJSON('https://ipapi.co/' + data.ip + '/json', function(result){
+                latitude = result.latitude;
+                longitude = result.longitude;
+                /* выведем полученные координаты (правый верхний угол) */
+                $('#latitude').text(latitude);
+                $('#longitude').text(longitude);
+            });
+        });
+
+
+        /* яндекс.карты | инициализация */
+        var myMap;
+        var myRoute;
+        ymaps.ready(init);
+        function init(){
+            myMap = new ymaps.Map("map", {
+                center: [latitude, longitude],
+                zoom: 12,
+                controls: ['zoomControl', 'typeSelector'],
+                type: 'yandex#hybrid',
+            });
+        }
+
+        /* яндекс.карты | маршрут */
+        function makeRoute(){
+            
+            var pointfrom = $( "#from" ).val();
+            var pointto = $( "#to" ).val();
+
+            myRoute = new ymaps.multiRouter.MultiRoute({   
+                referencePoints: [pointfrom, pointto],
+                params: {
+                    routingMode: 'auto',
+                    avoidTrafficJams: true
+                }
+            }, {
+                routeActiveStrokeWidth: 7,
+                routeActiveStrokeStyle: 'solid',
+                routeActiveStrokeColor: "#98ff98",
+                boundsAutoApply: true
+            });
+            myMap.geoObjects.add(myRoute);
+            myRoute.model.events.add('requestsuccess', function(){
+                var activeRoute = myRoute.getActiveRoute();
+                activeRoute.balloon.open()
+            })
+        }
+
+        /* яндекс.карты | очистить карту */
+        function clearMap(){
+            myMap.geoObjects.removeAll();
+        }
+    </script>
+</head>
+
+<body>
+    <h1>Мини-навигатор</h1>
+    <div block></div>
+        <div class="routeinfo"> 
+            Откуда: <input type='text' id='from'>
+            Куда: <input type='text' id='to'>
+            <input type='button' id='getroute' value="Построить маршрут" onclick="makeRoute()">
+            <input type='button' id="clear" value="Очистить карту" onclick="clearMap()">
+        </div>
+        <div class="coords"> 
+            Координаты по IP: <text id="latitude"></text>, <text id="longitude"></text>
+        </div>
+        <div class="map" id="map" style="width: 100%; height: 100vh"></div>
+    </div>
+</body>
+</html>
