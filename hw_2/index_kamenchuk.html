@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Интерактивная карта (by Виктория Каменчук)</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        * {
+            margin: 0;
+        }
+        body {
+            background: linear-gradient(90deg, #aea4e3, #d3ffe8);
+            font-family: Gill Sans Extrabold, sans-serif;
+            font-size: 10pt;
+        }
+        h1 {
+            text-align: center;
+            padding: 5px;
+            margin: 10px 5px 3px 5px;
+            font-size: 20pt
+        }
+        .coords {
+            margin: 0px 15px 0px 0px ;
+            text-align: right;
+            padding: 5px;
+            font-size: 8pt;
+        }
+        .routeinfo {
+            margin: 2px;
+            padding: 4px;
+            text-align: center;
+        }
+        .buttons{
+            margin: 2px;
+            padding: 4px;
+            text-align: center;
+        }
+        input[type=text] {
+            height: 26%;
+            width: 26%;
+            border: 1px solid black;
+            border-radius: 4px;
+            background-color: #cec3e6;
+            padding: 5px 10px;
+        }
+        select{
+            height: 26%;
+            width: 17%;
+            border: 1px solid black;
+            border-radius: 4px;
+            background-color: #cec3e6;
+            padding: 5px 10px;
+        }
+        .btn{
+            height: 3.3vh;
+            border-radius: 4px;
+            width: 160px;
+            background-color: #CAE6CF;
+            border: 1px solid black;
+        }
+        .btn:hover{
+            background-color: #689971;
+            font-style: italic;
+            box-shadow: 0 10px 10px black;
+        }
+
+        .btn:active{
+            transform: translateY(-3px);
+        }
+        .inputs:hover{
+            background-color: rgb(232, 221, 233);
+            font-style: italic;
+            box-shadow: 0 10px 10px black;
+        }
+        .map {
+            position: absolute;
+            top: 160px;
+            z-index:0; 
+            bottom: 0;
+        }
+    </style>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bd107a60-f614-4604-b3f7-a78ba565eabd&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        /* яндекс.карты | инициализация */
+        var myMap;
+        var myRoute;
+        var location;
+        var latitude;
+        var longitude;
+
+        ymaps.ready(init);
+        function init(){
+            myMap = new ymaps.Map("map", {
+                center: [55.76, 37.64],
+                zoom: 12,
+                controls: ['zoomControl', 'typeSelector'],
+                type: 'yandex#hybrid',
+            });
+
+            /* определяем геопозицию по IP (встроенная функция ymaps.geolocation) */
+            geolocation = ymaps.geolocation;
+            geolocation.get({
+                provider: 'yandex',   //указываем, что ищем по IP
+                mapStateAutoApply: true
+            }).then(function (result) {
+                myMap.geoObjects.add(result.geoObjects); // показывает точку локации фирменным яндексовским "я"
+                myMap.setCenter(result.geoObjects.position, 12);
+                latitude = result.geoObjects.position[0];
+                longitude = result.geoObjects.position[1];
+                $('#latitude').text(latitude);
+                $('#longitude').text(longitude);
+            });
+        }
+
+        /* яндекс.карты | маршрут */
+        function makeRoute(){
+            
+            var pointfrom = $( "#from" ).val(); // откуда
+            var pointto = $( "#to" ).val(); // куда
+            var type = $( "#type" ).val(); // каким образом, по умолчанию - автомобиль
+
+            if (pointfrom === ''){
+                alert('укажите начальную точку');
+                document.getElementById('from').focus();
+                return;
+            } else if (pointto === ''){
+                alert('укажите конечную старта');
+                document.getElementById('to').focus();
+                return;
+            } 
+
+            myRoute = new ymaps.multiRouter.MultiRoute({   
+                referencePoints: [pointfrom, pointto],
+                params: {
+                    routingMode: type,
+                    avoidTrafficJams: true
+                }
+            }, {
+                routeActiveStrokeWidth: 7,
+                routeActiveStrokeStyle: 'solid',
+                routeActiveStrokeColor: "#009933",
+                boundsAutoApply: true
+            });
+            myMap.geoObjects.add(myRoute);
+            myRoute.model.events.add('requestsuccess', function(){
+                var activeRoute = myRoute.getActiveRoute();
+                activeRoute.balloon.open()
+            })
+        }
+        
+        /* яндекс.карты | очистить карту */
+        function clearMap(){
+            myMap.geoObjects.removeAll();
+        }
+
+        /* яндекс.карты | вернуться в точку нахождения*/
+        function getBack(){
+            myMap.setCenter([latitude, longitude], 12);
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="name">
+            <h1>Мини-навигатор</h1>
+        </div>
+        <div class="coords"> 
+            Координаты (по IP): <text id="latitude"></text>, <text id="longitude"></text>
+        </div>
+    </header>
+    <div id="block"></div>
+        <div class="routeinfo"> 
+            Откуда: <input type='text' class="inputs" id='from' placeholder="Откуда">
+            Куда: <input type='text' class="inputs" id='to' placeholder="Куда">
+            Тип: <select class="inputs" id="type">
+                <option value="auto">на автомобиле</option>
+                <option value="masstransit">на общественном транспорте</option>
+                <option value="pedestrian">пешеходный маршрут</option>
+                <option value="bicycle">маршрут на велосипеде</option>
+              </select>
+        </div>
+        <div class="buttons">
+            <input type='button' class="btn" id="back" value="Мое местоположение" onclick="getBack()">
+            <input type='button' class="btn" id="clear" value="Очистить карту" onclick="clearMap()">
+            <input type='button' class="btn" id='getroute' value="Построить маршрут" onclick="makeRoute()">
+        </div>
+        <div class="map" id="map" style="width: 100%; height: 82vh"></div>
+    </div>
+
+</body>
+</html>
