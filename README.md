@@ -1,9 +1,9 @@
 # Домашние работы (web)
 ###### 6 семестр, 2021
 
-+ [д/з 1](https://github.com/victorioustone/web_6/edit/main/README.md#задание-1-к-1702)
-+ [д/з 2](https://github.com/victorioustone/web_6/edit/main/README.md#задание-2-к-2402)
-+ [д/з 3](https://github.com/victorioustone/web_6/edit/main/README.md#задание-3-к-303)
++ [дз 1](https://github.com/victorioustone/web_6/edit/main/README.md#задание-1-к-1702)
++ [дз 2](https://github.com/victorioustone/web_6/edit/main/README.md#задание-2-к-2402)
++ [дз 3](https://github.com/victorioustone/web_6/edit/main/README.md#задание-3-к-303)
 
 ### Задание 1 (к 17.02):
 "Реализовать центрирование карты по IP-адресу клиента"
