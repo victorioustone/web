@@ -15,7 +15,6 @@
             padding: 5px;
             margin: 30px 15px 15px 50px;
             font-size: 25pt;
-            /* font-family: Arial, Helvetica, sans-serif; */
         }
         p {
             font-size: 14pt;
@@ -139,17 +138,20 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js" type="text/javascript"></script>
 <script>
 
+// функция валидации email 
 function validateEmail(email) {
     var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     return emailReg.test( email );
 }
 
+// маскирование номера телефона
 $.mask.definitions['9'] = false;
 $.mask.definitions['5'] = "[0-9]";
 $("#phone").mask("+7 (955) 555-55-55");
-$('#submit').click(function(){
-    const emailValue = $('#email').val()
 
+$('#submit').click(function(){
+    // валидация email 
+    const emailValue = $('#email').val()
     if( !validateEmail(emailValue)) { 
         alert('данные электронной почты введены неверно')
         $( "#email" ).focus();
