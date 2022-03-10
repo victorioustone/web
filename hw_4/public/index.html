@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скоринг (by Victoria Kamenchuk)</title>
+    <link rel="stylesheet" href="style.css" >
+</head>
+<body>
+    <form action="http://localhost:3000/scoring" method="post">
+        <h1>Форма для заполнения</h1>
+        <p><i>Пожалуйста, заполните форму</i></p>
+        <fieldset>
+            <legend>Контактная информация</legend>
+                <div class="element">
+                    <label for="name">Имя и фамилия <em>*</em></label>
+                    <input type="text" id="name" name="name" placeholder="Питер Паркер" value="Питер Паркер" autofocus required>
+                </div>
+                <div class="element">
+                    <label for="email">E-mail <em>*</em></label>
+                    <input type="text" id="email" name="email" placeholder="example@at.com" 
+                                        value="example@at.com" autofocus required>
+                </div>
+                <div class="element">
+                    <label for="phone">Номер телефона</label>
+                    <input type="text" id="phone" name="phone" placeholder="+7 (9XX) XXX-XX-XX" value="+7 (955) 555-55-55">
+                </div>
+        </fieldset>
+        <fieldset>
+            <legend>Данные для проверки</legend>
+            <div class="element">
+                <label for="gender">Пол <em>*</em></label>
+                <select name="gender" id="gender">
+                    <option value="male">Мужской</option>
+                    <option value="female">Женский</option>
+                </select>
+            </div>
+            <div class="element">
+                <label for="birthdate">Дата рождения <em>*</em></label>
+                <input type="date" name="birthdate" id="birthdate" value="1999-02-22" required>
+            </div>
+            <div class="element">
+                    <label for="profession">Профессия <em>*</em></label>
+                    <select name="profession" id="profession">
+                        <option value="driver">Водитель</option>
+                        <option value="policeman">Полицейский</option>
+                        <option value="pilot">Пилот</option>
+                        <option value="judge">Судья</option>
+                        <option value="developer">Программист</option>
+                        <option value="teacher">Преподаватель</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <div class="element">
+                    <label for="periodoflife">Срок проживания в регионе <em>*</em></label>
+                    <input type="number" name="periodoflife" id="periodoflife" min="0" max="100" placeholder="5" value="5" required>
+                </div>  
+                <div class="element">
+                    <label for="sphere">Сфера деятельности <em>*</em></label>
+                    <select name="sphere" id="sphere">
+                        <option value="public">Общественная</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <div class="element">
+                    <label for="periodofwork">Период работы в организации <em>*</em></label>
+                    <input type="number" name="periodofwork" id="periodofwork" min="0" max="100" placeholder="5" value="5" required>
+                </div>
+                <div class="element">                    
+                    <label for="bankaccount">Наличие банковского счета</label>
+                    <input type="checkbox" name="bankaccount" id="bankaccount">
+                </div>
+                <div class="element">                    
+                    <label for="realestate">Наличие недвижимости</label>
+                    <input type="checkbox" name="realestate" id="realestate">
+                </div>
+                <div class="element">                    
+                    <label for="insurance">Наличие страхового полиса</label>
+                    <input type="checkbox" name="insurance" id="insurance">
+                </div>
+            </fieldset>
+            <p><input id="submit" type="submit" value="Отправить на рассмотрение"></p>
+    </form>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.maskedinput@1.4.1/src/jquery.maskedinput.min.js" type="text/javascript"></script>
+<script>
+
+// функция валидации email 
+function validateEmail(email) {
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailReg.test( email );
+}
+// маскирование номера телефона
+$.mask.definitions['9'] = false;
+$.mask.definitions['5'] = "[0-9]";
+$("#phone").mask("+7 (955) 555-55-55");
+
+$('#submit').click(function(){
+    // валидация email 
+    const emailValue = $('#email').val()
+    if( !validateEmail(emailValue)) { 
+        alert('данные электронной почты введены неверно')
+        $( "#email" ).focus();
+    }
+})
+</script>
