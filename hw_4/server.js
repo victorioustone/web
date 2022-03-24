@@ -35,9 +35,8 @@ app.post('/scoring', (req, res)=>{
             grade += dop
         }
         else {
-            grade += dop
+            grade += 0.3
         }
-        grade += 0.3
     }
 
     // срок проживания
