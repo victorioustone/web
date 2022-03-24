@@ -5,7 +5,7 @@
 + [дз 2](https://github.com/victorioustone/web_6#задание-2-к-2402)
 + [дз 3](https://github.com/victorioustone/web_6#задание-3-к-303)
 + [дз 4](https://github.com/victorioustone/web_6#задание-4-к-1003)
-+ [дз 5](https://github.com/victorioustone/web_6#задание-4-к-3103)
++ [дз 5](https://github.com/victorioustone/web_6#задание-5-к-3103)
   
   
 ### Задание 1 (к 17.02):
