@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.10",
+    "express": "^4.17.3",
+    "mongodb": "^4.4.1",
+    "nodemon": "^2.0.15",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+  }
+}
