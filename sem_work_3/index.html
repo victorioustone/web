@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"> -->
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <style>
+        label{
+            width: 300px;
+            display: block;
+            vertical-align: middle;
+            margin: 10px;
+        }
+        button{
+            vertical-align: middle;
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .wrapper{
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:5001')
+        socket.on('message', function(message){
+            alert('Server has sended you a message: ' + message)
+        })
+    </script>
+    <script>
+
+        var recognizer = new webkitSpeechRecognition();
+        recognizer.interimResults = true;
+        recognizer.lang = 'ru-Ru';
+
+        function validateEmail(email){
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
+    
+        async function sendMessage(){
+            var text = document.getElementById('textarea').value;
+            var email = document.getElementById('email').value;
+            if (validateEmail(email)){
+                socket.emit('eventClient', {message: text, recipient: email});
+                alert('The message has sent successfully')
+            }
+            else {
+                alert('email is not valid');
+            }
+        }
+
+
+        function startRecognition(){
+            recognizer.onresult = function(event){
+                var result = event.results[event.resultIndex];
+                document.getElementById('textarea').value = result[0].transcript;
+            }
+            recognizer.start();
+        }
+
+        function stopRecognition(){
+            recognizer.stop();
+        }
+
+</script>
+    <div class="wrapper">
+        <p><label>Почта: 
+            <input style="width: 300px;" class="form-control form-control-lg"" type="email" id="email">
+        </label></p>
+        <label>Сообщение: 
+            <input style="height: 150px; width: 300px;" class="form-control" type="textarea" id="textarea">
+        </label>
+    </div>
+    <div id="buttons">
+        <button class="btn btn-success" onclick="startRecognition()">Начать запись
+        </button>
+        <button class="btn btn-danger" onclick="stopRecognition()">Остановить запись
+        </button>
+    </div>
+    <div id="buttons">    
+        <button style="margin-left: 20px;" class="btn btn-primary" onclick="sendMessage();">Отправить</button>
+    </div>
+
+</body>
+</html>
