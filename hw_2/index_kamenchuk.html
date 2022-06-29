@@ -155,8 +155,23 @@
 
         /* яндекс.карты | вернуться в точку нахождения*/
         function getBack(){
+            /* обновляем геопозицию по IP (встроенная функция ymaps.geolocation) */
+            geolocation = ymaps.geolocation;
+            geolocation.get({
+                provider: 'yandex',   //указываем, что ищем по IP
+                mapStateAutoApply: true
+            }).then(function (result) {
+                myMap.geoObjects.add(result.geoObjects); // показывает точку локации фирменным яндексовским "я"
+                myMap.setCenter(result.geoObjects.position, 12);
+                latitude = result.geoObjects.position[0];
+                longitude = result.geoObjects.position[1];
+                $('#latitude').text(latitude);
+                $('#longitude').text(longitude);
+            });
             myMap.setCenter([latitude, longitude], 12);
         }
+
+
     </script>
 </head>
 

@@ -18,6 +18,7 @@ io.on('connection', function(socket){
         console.log('Email: ' + data.recipient);
         console.log('Client message: ' + data.message);
 
+        // вводим информацию о почте, откуда будем отправлять
         var transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 465,
@@ -25,7 +26,7 @@ io.on('connection', function(socket){
             auth: config,
         });
 
-        // var result = transporter.MailMessage.sendMail({
+        // отправляем сообщение
         var result = transporter.sendMail({
             from: config.user,
             to: data.recipient,
@@ -37,7 +38,6 @@ io.on('connection', function(socket){
 })
 
 var pathFile = path.resolve('index.html');
-
 app.get('/', (req, res)=>{
     res.sendFile(pathFile);
 })

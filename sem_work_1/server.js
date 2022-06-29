@@ -13,8 +13,8 @@ app.get('/', (req, res) => {
 app.get('/get/:val', (req, res) => {
     console.log(req.params.val)
     var val = req.params.val;
-    // console.log('here')
     let response = null;
+    // запрашиваем json-файл с курсами валют
     new Promise(async (resolve, reject)=>{
         try {
             response = await axios('https://www.cbr-xml-daily.ru/daily_json.js');

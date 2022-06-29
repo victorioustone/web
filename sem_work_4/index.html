@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
-    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous"> -->
-    <!-- CSS only -->
+    <title>Почтовый клиент</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <style>
         label{
@@ -46,7 +42,8 @@
             var re = /\S+@\S+\.\S+/;
             return re.test(email);
         }
-    
+
+        // отправка письма
         async function sendMessage(){
             var text = document.getElementById('textarea').value;
             var email = document.getElementById('email').value;
@@ -59,7 +56,7 @@
             }
         }
 
-
+        // запись голоса
         function startRecognition(){
             document.getElementById('status').style = "display:flex"
             recognizer.onresult = function(event){
@@ -69,27 +66,13 @@
             recognizer.start();
         }
 
+        // остановка записи голоса
         function stopRecognition(){
             document.getElementById('status').style = "display:none"
             recognizer.stop();
         }
-        
-        const allVoicesObtained = new Promise(function(resolve, reject) {
-            let voices = window.speechSynthesis.getVoices();
-            if (voices.length !== 0) {
-                resolve(voices);
-            } else {
-                window.speechSynthesis.addEventListener("voiceschanged", function() {
-                voices = window.speechSynthesis.getVoices();
-                resolve(voices);
-                });
-            }
-        });
 
-        function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
+        // прочитать написанное письмо
         function speechSynthesys(){
 
             var inputTxt = document.getElementById('textarea');

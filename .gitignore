@@ -1,15 +1,4 @@
 .DS_Store
-hw_2_1/node_modules
 hw_2_2/config.json
-hw_2_2/node_modules
-sem_work_1/node_modules/
-sem_work_2/mongo/bin/
-sem_work_2/mongo/LICENSE-Community.txt
-sem_work_2/mongo/MPL-2
-sem_work_2/mongo/README
-sem_work_2/node_modules/
-sem_work_3/.vscode/launch.json
 sem_work_3/config.json
-sem_work_3/node_modules/
-hw_2_2/.пример_работы.mov.icloud
-sem_work_4/node_modules/
+sem_work_3/.vscode

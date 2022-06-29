@@ -21,19 +21,6 @@
     </style>
 
     <script>
-        // function getRate(){
-        //     var currency = document.getElementById("select").value;
-        //     var url = 'https://www.cbr-xml-daily.ru/daily_json.js';
-        //     fetch(url) //GET-запрос по ресурсу url
-        //         .then((res) => {
-        //             return res.json()
-        //         })
-        //         .then((data) => {
-        //             // alert(data["Date"])
-        //             var course = data['Valute'][currency]["Value"];
-        //             document.getElementById("currency-value").value = course;
-        //         })
-        // }
         async function getRate(){
             var currency = document.getElementById("select").value;
             // var url = 'https://www.cbr-xml-daily.ru/daily_json.js';
