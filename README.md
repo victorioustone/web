@@ -11,7 +11,7 @@
 Вторая атттестация  
 + [дз 1](https://github.com/victorioustone/web_6#задание-2_1-к-505)  
 + [дз 2](https://github.com/victorioustone/web_6#задание-2_2)
-+ [работа на семинарах(https://github.com/victorioustone/web_6#РАБОТА-НА-СЕМИНАРАХ)
++ [работа на семинарах](https://github.com/victorioustone/web_6#РАБОТА-НА-СЕМИНАРАХ)
 
 Экзамен
 + [задание](https://github.com/victorioustone/web_6#ЭКЗАМЕН) 
